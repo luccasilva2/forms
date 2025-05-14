@@ -32,7 +32,7 @@ Certifique-se de que você tem os seguintes itens instalados:
 ### 1. Clone o projeto:
 
 ```bash
-git clone https://github.com/seu-usuario/seu-repositorio.git
+git remote add origin https://github.com/luccasilva2/forms.git
 cd seu-repositorio
 ```
 
