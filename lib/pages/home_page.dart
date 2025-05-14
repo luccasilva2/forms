@@ -46,4 +46,20 @@ class HomePage extends StatelessWidget {
         content: const Text('Tem certeza que deseja excluir?'),
         actions: [
           TextButton(
-            onPressed
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              ScaffoldMessenger.of(ctx).showSnackBar(
+                const SnackBar(content: Text('Formulário excluído!')),
+              );
+            },
+            child: const Text('Excluir'),
+          ),
+        ],
+      ),
+    );
+  }
+}
