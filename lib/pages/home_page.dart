@@ -12,13 +12,17 @@ class HomePage extends StatelessWidget {
         title: const Text('Meus Formulários'),
       ),
       body: ListView.builder(
-        itemCount: 5, // Mock de formulários
+        padding: const EdgeInsets.all(8),
+        itemCount: 5,
         itemBuilder: (context, index) {
           return FormCard(
             title: "Formulário ${index + 1}",
             date: "10/0${index + 1}/2023",
-            onEdit: () => print("Editar $index"),
-            onDelete: () => print("Excluir $index"),
+            onEdit: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CreateFormPage()),
+            ),
+            onDelete: () => _showDeleteDialog(context),
           );
         },
       ),
@@ -33,4 +37,13 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-}
+
+  void _showDeleteDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Excluir Formulário'),
+        content: const Text('Tem certeza que deseja excluir?'),
+        actions: [
+          TextButton(
+            onPressed
