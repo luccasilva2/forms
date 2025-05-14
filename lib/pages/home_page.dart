@@ -10,40 +10,49 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Meus Formulários'),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        elevation: 2,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.all(8),
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return FormCard(
-            title: "Formulário ${index + 1}",
-            date: "10/0${index + 1}/2023",
-            onEdit: () => Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const CreateFormPage()),
-            ),
-            onDelete: () => _showDeleteDialog(context),
-          );
-        },
+      body: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: ListView.separated(
+          itemCount: 5, // Isso futuramente virá de um banco (Firebase, por ex.)
+          separatorBuilder: (context, index) => const SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            final formTitle = "Formulário ${index + 1}";
+            final formDate = "10/0${index + 1}/2023";
+
+            return FormCard(
+              title: formTitle,
+              date: formDate,
+              onEdit: () => _navigateToCreateForm(context),
+              onDelete: () => _showDeleteDialog(context, formTitle),
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CreateFormPage()),
-          );
-        },
+        onPressed: () => _navigateToCreateForm(context),
+        tooltip: 'Criar novo formulário',
         child: const Icon(Icons.add),
       ),
     );
   }
 
-  void _showDeleteDialog(BuildContext context) {
+  void _navigateToCreateForm(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const CreateFormPage()),
+    );
+  }
+
+  void _showDeleteDialog(BuildContext context, String formTitle) {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('Excluir Formulário'),
-        content: const Text('Tem certeza que deseja excluir?'),
+        content: Text('Tem certeza que deseja excluir "$formTitle"?'),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
@@ -52,11 +61,14 @@ class HomePage extends StatelessWidget {
           TextButton(
             onPressed: () {
               Navigator.pop(ctx);
-              ScaffoldMessenger.of(ctx).showSnackBar(
-                const SnackBar(content: Text('Formulário excluído!')),
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('"$formTitle" foi excluído.')),
               );
             },
-            child: const Text('Excluir'),
+            child: const Text(
+              'Excluir',
+              style: TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),
