@@ -1,9 +1,8 @@
-
 class Question {
   final String id;
-  final String type; // 'text', 'multiple_choice', 'checkbox'
-  final String question;
-  final List<String>? options;
+  final String type;
+  String question;
+  List<String>? options;
   String answer;
 
   Question({
@@ -13,4 +12,14 @@ class Question {
     this.options,
     this.answer = '',
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'type': type,
+      'question': question,
+      'options': options,
+      'answer': answer,
+    };
+  }
 }
